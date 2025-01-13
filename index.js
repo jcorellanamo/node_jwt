@@ -76,7 +76,7 @@ app.post("/login", async (req, res) => {
 app.get("/usuarios", async (req, res) => {
   const authHeader = req.headers["authorization"];
 
-  // Verificar si el token está presente
+  // Verifica si el token está presente
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(403).json({ message: "Token no proporcionado o inválido." });
   }
@@ -84,13 +84,13 @@ app.get("/usuarios", async (req, res) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    // Verificar y decodificar el token
+    // Verifica y decodifica el token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Obtener el email del payload
     const { email } = decoded;
 
-    // Consultar al usuario en la base de datos
+    // Consultar al usuario en la db
     const result = await pool.query("SELECT * FROM usuarios WHERE email = $1", [email]);
 
     if (result.rows.length === 0) {
